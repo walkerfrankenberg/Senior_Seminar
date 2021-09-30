@@ -1,9 +1,9 @@
 ## Energy 2028
 ### Walker Frankenberg and Daniel Brey
 
-You can use the [editor on GitHub](https://github.com/walkerfrankenberg/Senior_Seminar/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
+Middlebury is currently working towards an initiative, Energy2028, which is a ten-year challenge with the goal of using 100 percent renewable energy by the year 2028. Updates relating to this initiative are infrequent and irregular, and we believe it would help both the school and students to have a more common, more accessible progress update. This may come in the form of a web application that allows users to see Middlebury's progress, as well as projections of where the school will be by the year 2028.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Our idea is to acquire data from the Middlebury Energy2028 project, and using machine learning, make predictions about Middlebury's progress towards its goals. 
 
 ### Markdown
 
