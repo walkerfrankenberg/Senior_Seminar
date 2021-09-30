@@ -1,5 +1,5 @@
 ## Energy 2028
-# Walker Frankenberg and Daniel Brey
+### Walker Frankenberg and Daniel Brey
 
 You can use the [editor on GitHub](https://github.com/walkerfrankenberg/Senior_Seminar/edit/main/docs/index.md) to maintain and preview the content for your website in Markdown files.
 
