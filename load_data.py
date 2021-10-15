@@ -20,10 +20,13 @@ for curr_year_folder in folders:
   year_df_list = []
   # Look at each file in the directory, where each file corresponds to a month's worth of data
   for file_name_ext in next(os.walk(curr_year_dir))[2]:
+    if (file_name_ext[-4:] != '.xls'):
+      continue
     index = 0
     file_name = file_name_ext[0:-4]
-    #print(file_name)
     curr_path = curr_year_dir + "/" + file_name_ext
+    
+    #print(curr_path)
     df = pd.read_html(curr_path)
     date = df[index].columns.tolist()
     
@@ -53,8 +56,8 @@ for curr_year_folder in folders:
           times[count] = element
         
         # Create a pandas dataframe for each day's data, and append it to a list for the whole month
-        packed_data = {'Average Demand': avg_demand, 'Peak' : peak, 'Off Peak' : off_peak}
-        day_dataframe = pd.DataFrame(data = packed_data, index = times)
+        packed_data = {'Time': times, 'Average Demand': avg_demand, 'Peak' : peak, 'Off Peak' : off_peak}
+        day_dataframe = pd.DataFrame(data = packed_data)
         month_df_list.append(day_dataframe)
         
         index += 2

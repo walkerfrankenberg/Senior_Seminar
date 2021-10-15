@@ -2,7 +2,19 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import altair as alt
+import os
 
+# Get the directory and the subfolders in the directory
+cur_dir = os.getcwd()
+data_dir = cur_dir + "/data"
+folders = next(os.walk(data_dir))[1]
+df_list = []
+for curr_year_folder in folders:
+  file_name = data_dir + '/' + curr_year_folder + '/' + curr_year_folder + '.csv'
+  df = pd.read_csv(file_name)
+  df_list.append(df)
+
+total_energy = pd.concat(df_list)
 
 st.title('Energy2028 Data Visuals')
 
@@ -23,10 +35,9 @@ df = sample_df.melt('Time', var_name='Measurement', value_name='Value') #Make th
 
 
 #First line graph option - uses altair
-chart_line = alt.Chart(df).mark_line().encode(
+chart_line = alt.Chart(total_energy).mark_line().encode(
   x='Time',
-  y='Value',
-  color= 'Measurement'
+  y='Average Demand'
 ).properties(title="Sample Graph")
 st.write("altair line chart below")
 st.altair_chart(chart_line, use_container_width=True)
