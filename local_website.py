@@ -43,11 +43,24 @@ st.write("altair line chart below")
 st.altair_chart(chart_line, use_container_width=True)
 
 #Second line graph option - uses st.line_chart
-df_index = df.rename(columns={'Time':'index'}).set_index('index')
+#df_index = df.rename(columns={'Time':'index'}).set_index('index')
+st.write(df)
 st.write("st line chart below")
-st.line_chart(df_index)
+#st.line_chart(df)
+chart = alt.Chart(df).mark_line().encode(
+  x="Time",
+  y="Value",
+  color="Measurement"
+).properties(title="Hello World")
+st.altair_chart(chart, use_container_width=True)
 st.write("st area chart below")
-st.area_chart(df_index)
+#st.area_chart(df)
+chart_area = alt.Chart(df).mark_area().encode(
+  x="Time",
+  y="Value",
+  color="Measurement"
+).properties(title="Hello World")
+st.altair_chart(chart_area, use_container_width=True)
 
 
 
