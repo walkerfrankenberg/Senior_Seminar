@@ -45,12 +45,14 @@ day_avg = get_30_day_avg(total_energy)
 
 total_energy['30 Day Average Demand'] = day_avg
 
+print(day_avg)
+
 st.title('Energy2028 Data Visuals')
 #First line graph option - uses altair
 chart_line = alt.Chart(total_energy).mark_line().encode(
   x='Time',
   y='30 Day Average Demand'
 ).properties(title="Sample Graph"
-).transform_filter(total_energy.index % 10 == 0)
+)
 st.write("altair line chart below")
 st.altair_chart(chart_line, use_container_width=True)
