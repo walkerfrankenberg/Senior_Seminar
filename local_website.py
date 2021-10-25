@@ -4,9 +4,7 @@ import numpy as np
 import altair as alt
 import os
 
-# Hey
-
-
+# 30 Day Average of Demand
 def get_30_day_avg(dataframe, column = 'Average Demand'):
   window_size = 30
   window_inc = 1
@@ -24,6 +22,7 @@ def get_30_day_avg(dataframe, column = 'Average Demand'):
   smoothed_impulse = np.asarray(smoothed_impulse)
   return smoothed_impulse
 
+# Load the dataframe from the csv files
 def get_energy_dataframe():
   # Get the directory and the subfolders in the directory
   cur_dir = os.getcwd()
@@ -46,10 +45,14 @@ day_avg = get_30_day_avg(total_energy)
 
 total_energy['30 Day Average Demand'] = day_avg
 
-print(day_avg)
+#First line graph option - uses altair
+
+st.sidebar.selectbox(
+            'App Navigation', 
+            'Other Page'
+        )
 
 st.title('Energy2028 Data Visuals')
-#First line graph option - uses altair
 chart_line = alt.Chart(total_energy).mark_line().encode(
   x='Time',
   y='30 Day Average Demand'
