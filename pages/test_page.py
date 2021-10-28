@@ -41,6 +41,20 @@ def get_energy_dataframe():
 def app():
   total_energy = get_energy_dataframe()
 
+
+
+  datetimes_as_strings = total_energy["Time"]
+  #print(type(datetimes_as_strings))
+  datetimes_replace = datetimes_as_strings.str.replace(' ', '-')
+  datetimes_split = datetimes_replace.str.split('-')
+  datetimes_day = datetimes_split.apply(pd.Series)[2]
+  days_filter = datetimes_day.astype('int')%15 == 0
+
+  total_energy = total_energy[days_filter]
+
+
+  
+
   day_avg = get_30_day_avg(total_energy)
 
   total_energy['30 Day Average Demand'] = day_avg
