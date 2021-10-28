@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import altair as alt
 import os
+import matplotlib.pyplot as plt
 
 # 30 Day Average of Demand
 def get_30_day_avg(dataframe, column = 'Average Demand'):
@@ -37,6 +38,19 @@ def get_energy_dataframe():
   total_energy = pd.concat(df_list)
   return total_energy
 
+# Pie chart, where the slices will be ordered and plotted counter-clockwise:
+labels = 'Frogs', 'Hogs', 'Dogs', 'Logs'
+sizes = [15, 30, 45, 10]
+explode = (0, 0.1, 0, 0)  # only "explode" the 2nd slice (i.e. 'Hogs')
+
+fig1, ax1 = plt.subplots()
+fig1.patch.set_facecolor('#EBEBEB')
+
+ax1.pie(sizes,
+        )
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+
 
 def app():
   total_energy = get_energy_dataframe()
@@ -65,11 +79,24 @@ def app():
   total_energy['30 Day Average Demand'] = day_avg
 
   #First line graph option - uses altair
-  st.title('Energy2028 Data Visuals')
+  
+  _, col2 = st.columns([.1, 4])
+
+  with col2:
+    st.header('Average Energy Demand')
   chart_line = alt.Chart(total_energy).mark_line().encode(
     alt.X('Date:T', timeUnit = 'yearmonthdate'),
     y='Average Demand'
-  ).properties(title="Sample Graph"
   )
-  st.write("altair line chart below")
   st.altair_chart(chart_line, use_container_width=True)
+
+  metric1, metric2, metric3 = st.columns([5,5,5])
+
+  with metric1:
+    st.metric('Usage: Past 24 Hours', 42, 2)
+  with metric2:
+    st.metric('Usage: Past Week', 42, 2)
+  with metric3:
+    st.metric('Usage: Past Month', 42, 2)
+
+  st.pyplot(fig1)
