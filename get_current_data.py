@@ -21,7 +21,7 @@ def load_day_data(curr_day, curr_month = "", curr_year = ""):
   url = get_url(curr_day, curr_month, curr_year)  
   data = requests.get(url).content
   
-  df = pd.read_csv(io.StringIO(data.decode('utf-8')))
+  df = pd.read_csv(io.StringIO(data.decode('utf-8')),skiprows=2)
   return string_filter(df)
   
 
