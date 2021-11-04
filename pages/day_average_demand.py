@@ -40,10 +40,25 @@ def get_energy_dataframe():
 
 def app():
   total_energy = get_energy_dataframe()
+
+
+
+  datetimes_as_strings = total_energy["Time"]
+  datetimes_replace = datetimes_as_strings.str.replace(' ', '-')
+  datetimes_split = datetimes_replace.str.split('-')
+  datetimes_day = datetimes_split.apply(pd.Series)[2]
+  days_filter = datetimes_day.astype('int')%15 == 0
+
+  total_energy = total_energy[days_filter]
+
+  day_avg = get_30_day_avg(total_energy)
+
+  total_energy['30 Day Average Demand'] = day_avg
+
+  
   
 
   datetimes_as_strings = total_energy["Time"]
-  #print(type(datetimes_as_strings))
   datetimes_replace = datetimes_as_strings.str.replace(' ', '-')
   datetimes_split = datetimes_replace.str.split('-')
   datetimes_day = datetimes_split.apply(pd.Series)[2]
@@ -51,25 +66,18 @@ def app():
   datetimes_year = datetimes_split.apply(pd.Series)[0]
 
   total_energy["Date"] = datetimes_year + '-' + datetimes_month + '-' + datetimes_day 
-  #print(len(total_energy['Date'].unique().tolist())) 
   days_filter = datetimes_day.astype('int')%15 == 0
   total_energy = total_energy[days_filter]
   
   total_energy = total_energy.groupby('Date', group_keys=False).apply(lambda df: df.sample(1))
+  
 
+  _, col2 = st.columns([.1, 4])
 
-
-
-  day_avg = get_30_day_avg(total_energy)
-
-  total_energy['30 Day Average Demand'] = day_avg
-
-  #First line graph option - uses altair
-  st.title('Energy2028 Data Visuals')
+  with col2:
+    st.header('30 Day Average Energy Demand')
   chart_line = alt.Chart(total_energy).mark_line().encode(
     alt.X('Date:T', timeUnit = 'yearmonthdate'),
-    y='Average Demand'
-  ).properties(title="Sample Graph"
+    y='30 Day Average Demand'
   )
-  st.write("altair line chart below")
   st.altair_chart(chart_line, use_container_width=True)
