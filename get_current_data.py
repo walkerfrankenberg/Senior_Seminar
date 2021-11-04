@@ -5,29 +5,35 @@ import pandas as pd
 import io
 import re
 
-def get_url(curr_day, curr_month, curr_year):
-  if(type(curr_day) == int):
-    if(curr_day < 10):
-      return "https://observatory.middlebury.edu/campus/energy/archive/{}{}0{}-campus.csv".format(curr_year, curr_month, curr_day)
+def get_url(curr_day, curr_month, curr_year, building):
+  if(building):
+    if(type(curr_day) == int):
+      if(curr_day < 10):
+        return "https://observatory.middlebury.edu/campus/energy/archive/{}{}0{}-mbh.csv".format(curr_year, curr_month, curr_day)
+      else:
+        return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-mbh.csv".format(curr_year, curr_month, curr_day)
+    else:
+      return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-mbh.csv".format(curr_year, curr_month, curr_day)
+  else:
+    if(type(curr_day) == int):
+      if(curr_day < 10):
+        return "https://observatory.middlebury.edu/campus/energy/archive/{}{}0{}-campus.csv".format(curr_year, curr_month, curr_day)
+      else:
+        return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-campus.csv".format(curr_year, curr_month, curr_day)
     else:
       return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-campus.csv".format(curr_year, curr_month, curr_day)
-  else:
-    return "https://observatory.middlebury.edu/campus/energy/archive/{}{}{}-campus.csv".format(curr_year, curr_month, curr_day)
-
 
 def string_filter(df):
-  #print(df)
   datetimes_as_strings = df.iloc[:,0]
   datetimes_replace = datetimes_as_strings.str.replace(':', '-')
   datetimes_split = datetimes_replace.str.split('-')
-  #print(datetimes_split)
   datetimes_minute = datetimes_split.apply(pd.Series)[3]
   minutes_filter = datetimes_minute.astype('int')%10 == 0
   
   return df[minutes_filter]
   
-def load_day_data(curr_day, curr_month = "", curr_year = ""):
-  url = get_url(curr_day, curr_month, curr_year)  
+def load_day_data(curr_day, curr_month = "", curr_year = "", building = None):
+  url = get_url(curr_day, curr_month, curr_year, building)  
   data = requests.get(url).content
   
   df = pd.read_csv(io.StringIO(data.decode('utf-8')))
